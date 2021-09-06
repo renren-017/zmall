@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     # My apps
     'user',
+    'advertisement',
 ]
 
 MIDDLEWARE = [

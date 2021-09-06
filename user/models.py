@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=255, unique=True)
     phone = PhoneNumberField(unique=True, null=False, blank=True)
     city = models.CharField(max_length=30)
-    avatar = models.ImageField(upload_to='avatar/', blank=False, null=True)
+    avatar = models.ImageField(upload_to='avatar/', blank=False, null=True, default='avatar/Billy.jpg')
 
     REQUIRED_FIELDS = ['email', 'city', ]
 
