@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %} Register {% endblock %}
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post", enctype="multipart/form-data">
+      {% csrf_token %}
+      <p>Title: {{ form.title }}</p>
+      {{ form.title.errors }}
+      <p>Description: {{ form.description }}</p>
+      {{ form.description.errors }}
+      <p>Upload images: <input type="file" multiple name="images" required></p>
+      <button type="submit" value="Register">Register</button>
+  </form>
+{% endblock %}

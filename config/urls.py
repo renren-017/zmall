@@ -22,6 +22,7 @@ from user.views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='home'),
+    path('board/', include('advertisement.urls')),
     path('accounts/', include('user.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

@@ -4,7 +4,7 @@
   <h2>Sign up</h2>
   <form method="post", enctype="multipart/form-data", action="{% url 'register' %}">
       {% csrf_token %}
-      <p>Username: {{ form.username }}</p>
+      <p>Username: {{ form.title }}</p>
       {{ form.username.errors }}
       <p>Email: {{ form.email }}</p>
       {{ form.email.errors }}
