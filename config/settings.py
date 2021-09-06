@@ -147,5 +147,5 @@ LOGIN_REDIRECT_URL = '/'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'donnie.darko.test@gmail.com'
-# EMAIL_HOST_PASSWORD = 'hjkf12345'
+# EMAIL_HOST_PASSWORD = 'Monster12Inc'
 # DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'
