@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
+{% block content %}
+<h2>Log in</h2>
+
+<form method="post", enctype="multipart/form-data">
+  {% csrf_token %}
+  <p>Username: {{ form.username }}</p>
+  <p>Password: {{ form.password }}</p>
+  {% if form.errors %}
+    <p>Invalid username or password</p>
+  {% endif %}
+
+  {% if next %}
+    <p>You can't access this page</p>
+  {% endif %}
+  <p><button type="submit">Log in</button></p>
+<!--  <input type="hidden" name="next" value="{{ next }}">-->
+</form>
+{% endblock %}

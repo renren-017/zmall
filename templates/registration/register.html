@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Register {% endblock %}
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post", enctype="multipart/form-data", action="{% url 'register' %}">
+      {% csrf_token %}
+      <p>Username: {{ form.username }}</p>
+      {{ form.username.errors }}
+      <p>Email: {{ form.email }}</p>
+      {{ form.email.errors }}
+      <p>Phone: {{ form.phone }}</p>
+      {{ form.phone.errors }}
+      <p>City: {{ form.city }}</p>
+      {{ form.city.errors }}
+      <p>Avatar: {{ form.avatar }}</p>
+      {{ form.avatar.errors }}
+      <p>Password: {{ form.password1 }}</p>
+      <p>Password Again: {{ form.password2 }}</p>
+      {{ form.password2.errors }}
+      <button type="submit" value="Register">Register</button>
+  </form>
+{% endblock %}
