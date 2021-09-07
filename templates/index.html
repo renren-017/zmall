@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
-{% block title %} Index {% endblock %}
+{% block title %} Bulletin board {% endblock %}
 {% block content %}
-  <h2>Index.html</h2>
+  <h2>Bulletin board</h2>
+  {% for ad in ads %}
+    <div class="ad" >
+      <p>{{ ad.title }}</p>
+      <p>{{ ad.description }}</p>
+      <p>{{ ad.user.username }}</p>
+      <p><img src="{{ ad.head_image.url }}"></p>
+    </div>
+  {% endfor %}
 {% endblock %}

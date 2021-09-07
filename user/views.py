@@ -7,11 +7,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from .utils import Util
 
 
-def index(request):
-    """Home page"""
-    return render(request, 'index.html', {})
-
-
 def register(request):
     """Register new user"""
     if request.method == 'POST':
