@@ -8,7 +8,7 @@
       {{ form.title.errors }}
       <p>Description: {{ form.description }}</p>
       {{ form.description.errors }}
-      <p>Upload images: <input type="file" multiple name="images" required></p>
+      <p>Upload images: <input type="file" multiple name="images" accept="image/*" required></p>
       <button type="submit" value="Register">Register</button>
   </form>
 {% endblock %}
