@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block title %} Bulletin board {% endblock %}
+{% block page_name %} Bulletin board {% endblock %}
 {% block content %}
-  <h2>Bulletin board</h2>
   {% for ad in ads %}
     <div class="ad" >
+      <p><img src="{{ ad.head_image.url }}" height="360" width="360"></p>
       <p>{{ ad.title }}</p>
       <p>{{ ad.description }}</p>
-      <p>{{ ad.user.username }}</p>
-      <p><img src="{{ ad.head_image.url }}"></p>
+      <p class="user">{{ ad.user.username }}</p>
     </div>
   {% endfor %}
 {% endblock %}
