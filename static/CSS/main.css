@@ -5,10 +5,21 @@
 
 body{
  background: #E6EBEF;
+ border: 5x solid black;
  display: flex;
  flex-direction: column;
  justify-content: space-between;
+ min-height: 100vh;
+
 }
+
+/*
+body{
+ background: #E6EBEF;
+ display: flex;
+ flex-direction: column;
+}
+*/
 
 a{
   text-decoration: none;
@@ -56,7 +67,13 @@ nav{
   margin: 30px;
 }
 
-.topnav a:hover{
+.topnav .links a:hover{
+  font-size: 31px;
+  padding-bottom: 9px;
+  border-bottom: 4px solid #fff;
+}
+
+.topnav .profile a:hover{
   font-size: 31px;
   padding-bottom: 9px;
   border-bottom: 4px solid #fff;
@@ -66,19 +83,34 @@ nav{
 .main_content{
   display: flex;
   flex: 1 1 auto;
+  border: 2px solid yellow;
+}
+
+.changing_content{
+  flex: 1 1 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .left_menu{
   color: green;
-  width: 25%;
+  background: white;
+  width: 15%;
   padding-top: 60px;
   text-align: center;
+  border-radius: 5px;
+  border: 2px solid green;
 }
 
 .list_of_ad{
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
+  border: 2px solid grey;
+  flex: 1 1 auto;
+  justify-content: flex-start;
 }
+
 
 .changing_content .page_name{
   text-align: center;
@@ -86,13 +118,15 @@ nav{
   font-size: 25px;
   color: #0C79F2;
   height: 50px;
+  border: 2px solid purple;
 }
 
 .main_content .list_of_ad .ad{
   color: blue;
   border-radius: 2%;
   background: #DAE6F2;
-  margin: 0 0 20px 20px;
+  margin: 5px 20px;
+  margin: 5px 20px;
 }
 
 .main_content .list_of_ad .ad img{
@@ -106,8 +140,38 @@ nav{
 
 /* footer */
 .footer_content{
-  background: red;
   border: 2px solid red;
   text-align: center;
   color: red;
+  flex 0 0 auto;
 }
+
+form{
+  background: yellow;
+  text-align: justify;
+  border-radius: 100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 80px;
+}
+
+form p{
+ margin-left: auto;
+ margin-right: auto;
+ width: 25em
+ height: 1em;
+}
+
+button{
+ text-align: center;
+ margin-right: 150px;
+ background: red;
+}
+
+form p a{
+  margin: 20px;
+}
+
+/* ________________________ */
+

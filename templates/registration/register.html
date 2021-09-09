@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block title %} Sign Up {% endblock %}
+{% block page_name %} Sign Up {% endblock %}
 {% block content %}
-  <h2>Sign up</h2>
   <form method="post", enctype="multipart/form-data", action="{% url 'register' %}">
       {% csrf_token %}
-      <p>Username: {{ form.title }}</p>
+      <p>Username: {{ form.username }}</p>
       {{ form.username.errors }}
       <p>Email: {{ form.email }}</p>
       {{ form.email.errors }}

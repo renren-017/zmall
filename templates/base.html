@@ -13,7 +13,7 @@
         <nav>
           <div class="topnav" id="myTopnav">
             <div class="label">
-              <a href="{% url 'home' %}">Logo</a>
+              <a href="{% url 'home' %}">Bulletin board</a>
             </div>
               {% if user.is_authenticated %}
             <div class="links">
@@ -41,9 +41,12 @@
     <div class="main_content">
         <div class="left_menu">
             Left menu!
+            <p><li>link1</li></p>
+            <p><li>link1</li></p>
+            <p><li>link1</li></p>
         </div>
         <div class="changing_content">
-            <div class="page_name">{% block page_name %}{% endblock %}</div>
+            <div class="page_name">{% block page_name %} {% endblock %}</div>
             <div class="list_of_ad">{% block content %} {% endblock %}</div>
         </div>
     </div>
