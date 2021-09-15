@@ -6,8 +6,12 @@
     <div class="ad" >
       <p><img src="{{ ad.head_image.url }}" height="360" width="360"></p>
       <p>{{ ad.title }}</p>
-      <p>{{ ad.description }}</p>
-      <p class="user">{{ ad.user.username }}</p>
+      {% if ad.description|length < 42 %}
+        <p class="description">{{ ad.description }}</p>
+      {% else %}
+        <p class="description">{{ ad.description|stringformat:".42s" }}...</p>
+      {% endif %}
+      <p class="user">Added by: {{ ad.user.username }}</p>
     </div>
   {% endfor %}
 {% endblock %}

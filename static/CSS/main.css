@@ -126,11 +126,20 @@ nav{
   border-radius: 2%;
   background: #DAE6F2;
   margin: 5px 20px;
-  margin: 5px 20px;
 }
 
 .main_content .list_of_ad .ad img{
   border-radius: 2%;
+}
+
+.list_of_ad p{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.list_of_ad .description{
+  text-align: left;
+  margin-left: 15px;
 }
 
 .list_of_ad .user{
@@ -147,8 +156,7 @@ nav{
 }
 
 form{
-  background: yellow;
-  text-align: justify;
+  text-align: center;
   border-radius: 100px;
   display: block;
   margin-left: auto;
@@ -156,21 +164,56 @@ form{
   padding-top: 80px;
 }
 
-form p{
- margin-left: auto;
- margin-right: auto;
- width: 25em
- height: 1em;
+.email_form{
+ width: 320px;
+ height: 300px;
+}
+
+.password_change_form{
+  width: 500px;
 }
 
 button{
- text-align: center;
- margin-right: 150px;
- background: red;
+ background: #0C79F2;
+ color: white;
+ font-family: sans-serif;
+ font-size: 25px;
+ margin: auto;
+ width: 150px;
+ height: 50px;
+ border-radius: 60px;
+}
+
+form p{
+  display: flex;
+  justify-content: space-between;
 }
 
 form p a{
   margin: 20px;
+}
+
+.form_errors{
+  background: red;
+}
+
+.form_message{
+  color: red;
+  text-align: center;
+  justify-content: center;
+}
+
+.html_message{
+  text-align: center;
+  margin: auto;
+  margin-top: 5%;
+  color: #0C79F2;
+}
+
+.password_advise{
+  margin-top: 10    %;
+  text-align: left;
+  color: #0C79F2;
 }
 
 /* ________________________ */

@@ -17,6 +17,13 @@
       <p>Password: {{ form.password1 }}</p>
       <p>Password Again: {{ form.password2 }}</p>
       {{ form.password2.errors }}
-      <button type="submit" value="Register">Register</button>
+      <br>
+      <p><button type="submit" value="Register">Register</button></p>
+      <div class="password_advise">
+        <p>Your password can’t be too similar to your other personal information.</p>
+        <p>Your password must contain at least 8 characters.</p>
+        <p>Your password can’t be a commonly used password.</p>
+        <p>Your password can’t be entirely numeric.</p>
+      </div>
   </form>
 {% endblock %}
