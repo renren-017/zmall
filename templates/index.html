@@ -4,7 +4,7 @@
 {% block content %}
   {% for ad in ads %}
     <div class="ad" >
-      <p><img src="{{ ad.head_image.url }}" height="360" width="360"></p>
+      <p><img src="{{ ad.head_image.url }}"></p>
       <p>{{ ad.title }}</p>
       {% if ad.description|length < 42 %}
         <p class="description">{{ ad.description }}</p>
