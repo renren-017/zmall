@@ -1,11 +1,17 @@
-from django.contrib.auth import views
-from django.shortcuts import render, redirect
+from .utils import Util, token_generator
 from .models import CustomUser
 from .forms import SignupForm
+
+from django.contrib.auth import views
+from django.shortcuts import render, redirect
+from django.views import View
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
-from .utils import Util
 
 
 def register(request):
@@ -17,13 +23,18 @@ def register(request):
             user = CustomUser.objects.get(email=form.cleaned_data['email'])
             user.is_active = False
             user.save()
-            current_site = get_current_site(request).domain
-            absolut_url = 'http://' + current_site
-            email_body = 'Hi ' + form.cleaned_data['username'] + ' You successfully sign up on ' + absolut_url + \
-                         '\nCome and make your first advertisement'
+            uid64 = urlsafe_base64_encode(force_bytes(user.pk))
+            domain = get_current_site(request).domain
+            link = reverse('activate', kwargs={
+                'uid64': uid64,
+                'token': token_generator.make_token(user, ),
+            })
+            activate_url = 'http://' + domain + link
+            email_body = 'Hi ' + user.username + ' You successfully sign up on Bulletin Board' + \
+                         '\nTo verify your account use this link bellow ' + activate_url
             data = {
                 'email_body': email_body,
-                'to_email': form.cleaned_data['email'],
+                'to_email': user.email,
                 'email_subject': 'Verify your email',
             }
             Util.send_email(data)
@@ -34,6 +45,27 @@ def register(request):
         'form': form,
     }
     return render(request, 'registration/register.html', context)
+
+
+class VerificationView(View):
+
+    def get(self, request, uid64, token):
+        try:
+            id = force_text(urlsafe_base64_decode(uid64))
+            user = CustomUser.objects.get(pk=id)
+
+            if not token_generator.check_token(user, token):
+                return redirect('login')
+
+            if user.is_active:
+                return redirect('login')
+            user.is_active = True
+            user.save()
+            return redirect('login')
+
+        except Exception as ex:
+            pass
+        return redirect('login')
 
 
 @login_required
@@ -51,4 +83,3 @@ class ChangePassword(views.PasswordChangeView):
 class PasswordChangeDone(views.PasswordChangeDoneView):
     """Change password done landing"""
     template_name = 'registration/password_change_done.html'
-

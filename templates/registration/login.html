@@ -6,6 +6,7 @@
   {% if next %}
     <p class="form_message">You need to log in, to access this page!</p>
   {% endif %}
+  <p>{{ message }}</p>
   {% csrf_token %}
   <p>Username: {{ form.username }}</p>
   <p>Password: {{ form.password }}</p>

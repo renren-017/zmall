@@ -6,5 +6,6 @@ from . import views
 urlpatterns = [
     path('register/', views.register, name='register'),
     path('logout/', views.logout_view, name='logout'),
+    path('activate/<uid64>/<token>', views.VerificationView.as_view(), name='activate'),
 ]
 
