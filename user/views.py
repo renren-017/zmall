@@ -1,5 +1,6 @@
 from django.contrib.auth import views
 from django.shortcuts import render, redirect
+from .models import CustomUser
 from .forms import SignupForm
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,9 @@ def register(request):
         form = SignupForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            user = CustomUser.objects.get(email=form.cleaned_data['email'])
+            user.is_active = False
+            user.save()
             current_site = get_current_site(request).domain
             absolut_url = 'http://' + current_site
             email_body = 'Hi ' + form.cleaned_data['username'] + ' You successfully sign up on ' + absolut_url + \
