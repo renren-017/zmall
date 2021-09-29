@@ -8,6 +8,7 @@
   {% endif %}
   <p>{{ message }}</p>
   {% csrf_token %}
+  {% include 'partials/_messages.html' %}
   <p>Username: {{ form.username }}</p>
   <p>Password: {{ form.password }}</p>
   {% if form.errors %}

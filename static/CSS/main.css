@@ -82,7 +82,7 @@ nav{
 /* main */
 .main_content{
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 800px;
   border: 2px solid yellow;
 }
 
@@ -152,6 +152,7 @@ nav{
 
 /* footer */
 .footer_content{
+  height: 80px;
   border: 2px solid red;
   text-align: center;
   color: red;

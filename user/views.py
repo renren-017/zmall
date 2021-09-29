@@ -12,6 +12,7 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib import messages
 
 
 def register(request):
@@ -55,12 +56,14 @@ class VerificationView(View):
             user = CustomUser.objects.get(pk=id)
 
             if not token_generator.check_token(user, token):
+                messages.success(request, 'Account already activated')
                 return redirect('login')
 
             if user.is_active:
                 return redirect('login')
             user.is_active = True
             user.save()
+            messages.success(request, 'Account activated successfully')
             return redirect('login')
 
         except Exception as ex:
