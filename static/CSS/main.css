@@ -240,7 +240,7 @@ form p a{
 .ad_detail_content p{
   text-align: left;
   margin: 20px;
-  color: #0C79F2;
+
 }
 
 .ad_detail_content p img{
@@ -267,6 +267,28 @@ form p a{
   border: 2px solid #0C79F2;
 }
 
+.ad_detail .author{
+  text-align: right;
+  margin-right: 30px;
+}
 
+.private{
+  display: inline-flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+}
+
+.private p{
+  text-align: left;
+  margin-top: 20px;
+  margin-left: 150px;
+}
+
+.private img{
+  margin: 20px;
+  width: 480px;
+  height: 480px;
+  border: 2px solid #0C79F2;
+}
 /* ________________________ */
 

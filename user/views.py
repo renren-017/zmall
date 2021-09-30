@@ -86,3 +86,12 @@ class ChangePassword(views.PasswordChangeView):
 class PasswordChangeDone(views.PasswordChangeDoneView):
     """Change password done landing"""
     template_name = 'registration/password_change_done.html'
+
+
+@login_required
+def private(request):
+    user = CustomUser.objects.get(id=request.user.id)
+    context = {
+        'user': user,
+    }
+    return render(request, 'registration/private.html', context)

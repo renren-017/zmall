@@ -20,17 +20,17 @@
                 <a href="{% url 'home' %}">Home Page</a>
                 <a href="{% url 'create_ad' %}">Create ad</a>
                 <a href="{% url 'logout' %}">Log out</a>
-                <a href="#">Link 3</a>
+                <a href="{% url 'private' %}">Private</a>
             </div>
             <div class="profile">
-              <a href="#">Hello, {{ user.username }}</a>
+              <a href="{% url 'private' %}">Hello, {{ user.username }}</a>
             </div>
               {% else %}
               <div class="links">
                   <a href="{% url 'home' %}">Home Page</a>
                   <a href="{% url 'create_ad' %}">Create ad</a>
                   <a href="{% url 'register' %}">Sign Up</a>
-                  <a href="#">Link 3</a>
+                  <a href="{% url 'private' %}">Private</a>
             </div>
             <div class="profile">
               <a href="{% url 'login' %}">Log In</a>
