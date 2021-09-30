@@ -219,10 +219,54 @@ form p a{
 }
 
 .password_advise{
-  margin-top: 10    %;
+  margin-top: 10%;
   text-align: left;
   color: #0C79F2;
 }
+
+.ad_detail{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.ad_detail_content{
+  display: inline-flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+}
+
+
+.ad_detail_content p{
+  text-align: left;
+  margin: 20px;
+  color: #0C79F2;
+}
+
+.ad_detail_content p img{
+  width: 480px;
+  height: 480px;
+  border: 2px solid #0C79F2;
+}
+
+.ad_detail_content .description{
+  flex: auto;
+  flex-wrap: wrap;
+}
+
+.ad_detail .gallery{
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+
+.ad_detail .gallery img{
+  margin: 0 10px;
+  width: 250px;
+  height: 250px;
+  border: 2px solid #0C79F2;
+}
+
 
 /* ________________________ */
 

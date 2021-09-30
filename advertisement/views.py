@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.views.generic import DetailView
+
 from .models import Advertisement, AdvertisementImage
 from .forms import AdvertisementForm
 from django.contrib.auth.decorators import login_required
@@ -11,6 +13,24 @@ def index(request):
         'ads': ads,
     }
     return render(request, 'index.html', context)
+
+
+def index_detail(request, pk):
+    """Advertisement detail view"""
+    ad = Advertisement.objects.get(id=pk)
+    images = AdvertisementImage.objects.filter(advertisement=ad.id)
+    context = {
+        'ad': ad,
+        'images': images,
+    }
+    return render(request, 'index_detail.html', context)
+
+
+class IndexDetail(DetailView):
+    model = Advertisement
+    template_name = 'index_detail.html'
+    context_object_name = 'ad'
+
 
 
 @login_required
