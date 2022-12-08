@@ -2,3 +2,7 @@ advertisement/migrations
 user/migrations
 
 media
+
+.env
+__pycache__/
+.idea/

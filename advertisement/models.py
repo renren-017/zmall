@@ -14,7 +14,7 @@ class Advertisement(models.Model):
     title = models.CharField(max_length=255)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField()
-    head_image = models.ImageField(upload_to=get_upload_path_head_image, blank=True, null=True)
+    head_image = models.FileField(upload_to=get_upload_path_head_image, blank=True, null=True)
 
     def username(self):
         return self.user.username
@@ -25,4 +25,4 @@ class Advertisement(models.Model):
 
 class AdvertisementImage(models.Model):
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=get_upload_path_ad_image, blank=True, null=True)
+    image = models.FileField(upload_to=get_upload_path_ad_image, blank=True, null=True)

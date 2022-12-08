@@ -8,7 +8,7 @@ from django.views import View
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
@@ -52,7 +52,7 @@ class VerificationView(View):
 
     def get(self, request, uid64, token):
         try:
-            id = force_text(urlsafe_base64_decode(uid64))
+            id = str(urlsafe_base64_decode(uid64))
             user = CustomUser.objects.get(pk=id)
 
             if not token_generator.check_token(user, token):

@@ -6,9 +6,9 @@ from .models import CustomUser
 class SignupForm(UserCreationForm):
     username = forms.CharField(min_length=3, max_length=30, required=True)
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-    city = forms.CharField(max_length=30, required=False)
-    avatar = forms.ImageField(required=False)
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=50)
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'city', 'phone', 'avatar')
+        fields = ('username', 'email', 'first_name', 'last_name')
