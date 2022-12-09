@@ -17,7 +17,20 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
 from advertisement.views import index, IndexDetail, index_detail
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+          title="Snippets API",
+          default_version='v1',
+          description="Test description",
+   ),
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +40,8 @@ urlpatterns = [
     path('board/', include('advertisement.urls')),
     path('accounts/', include('user.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/', include('advertisement.urls')),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
 if settings.DEBUG:

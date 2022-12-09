@@ -8,3 +8,4 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         model = Advertisement
         fields = '__all__'
 
+
