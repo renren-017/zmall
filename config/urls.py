@@ -27,6 +27,9 @@ urlpatterns = [
     path('board/', include('advertisement.urls')),
     path('accounts/', include('user.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+
+    path('api/', include('api.urls'))
+
 ]
 
 if settings.DEBUG:

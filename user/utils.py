@@ -7,7 +7,7 @@ class Util:
 
     @staticmethod
     def send_email(data):
-        email = EmailMessage(subject=['email_subject'], body=data['email_body'], to=[data['to_email']])
+        email = EmailMessage(subject=aba215800d61data['email_subject'], body=data['email_body'], to=[data['to_email']])
         email.send()
 
 

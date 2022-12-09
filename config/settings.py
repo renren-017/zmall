@@ -29,7 +29,7 @@ SECRET_KEY = 'oiv%z24bno)w$&6#l%_le%g%o_lefzeb#svrq^j2dtrw%rlq1&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     # My apps
     'user',
     'advertisement',
+
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -90,7 +92,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB_NAME'),
         'USER': os.getenv('POSTGRES_DB_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASS'),
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': 5432,
     }
 }
@@ -147,11 +149,3 @@ AUTH_USER_MODEL = 'user.CustomUser'
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 LOGIN_REDIRECT_URL = '/'
-
-
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'donnie.darko.test@gmail.com'
-# EMAIL_HOST_PASSWORD = 'Monster12Inc'
-# DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'
