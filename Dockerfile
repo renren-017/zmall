@@ -1,11 +1,11 @@
-FROM python:3
+FROM python:3.8.16-slim
 
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONBUFFERED 1
 
-ENV BASE_DIR=/Bulletin_board
+RUN mkdir /zmall
 
-WORKDIR $BASE_DIR
-COPY requirements.txt $BASE_DIR/
+WORKDIR /zmall
+
+COPY . .
 
 RUN pip install -r requirements.txt
-COPY . $BASE_DIR/

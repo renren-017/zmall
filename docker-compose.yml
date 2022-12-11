@@ -5,14 +5,15 @@ services:
     image: postgres
 
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - pgdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=$POSTGRES_DB_NAME
       - POSTGRES_USER=$POSTGRES_DB_USER
       - POSTGRES_PASSWORD=$POSTGRES_PASS
   web:
-    build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/Bulletin_board
     ports:
@@ -24,4 +25,4 @@ services:
     depends_on:
       - db
 volumes:
-  postgres_data:
+  pgdata:
