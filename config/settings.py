@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # My frameworks
     'django_cleanup',
-    'cities',
+    # 'cities',
     # My apps
+    'drf_yasg',
     'user',
     'advertisement',
 ]

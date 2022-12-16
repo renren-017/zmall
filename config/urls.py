@@ -34,14 +34,13 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='home'),
+    path('home/', index, name='home'),
     # path('ad/<int:pk>', IndexDetail.as_view(), name='ad_detail'),
     path('ad/<int:pk>', index_detail, name='ad_detail'),
-    path('board/', include('advertisement.urls')),
     path('accounts/', include('user.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api/', include('advertisement.urls')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
 if settings.DEBUG:
