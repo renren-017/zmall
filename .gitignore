@@ -2,6 +2,7 @@ advertisement/migrations
 user/migrations
 
 media
+data
 
 .env
 __pycache__/

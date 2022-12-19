@@ -1,3 +1,5 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
@@ -10,6 +12,7 @@ class AdvertisementListView(ListCreateAPIView):
     model = Advertisement
     queryset = Advertisement.objects.all()
     parser_classes = (MultiPartParser, FormParser)
+    filter_backends = (SearchFilter, )
     serializer_class = AdvertisementSerializer
 
 
@@ -25,6 +28,7 @@ class CategoryListAPIView(ListCreateAPIView):
     model = Category
     queryset = Category.objects.all()
     parser_classes = (MultiPartParser, FormParser)
+    filter_backends = (SearchFilter, )
     serializer_class = CategorySerializer
 
 
@@ -40,6 +44,7 @@ class SubCategoryListAPIView(ListCreateAPIView):
     model = SubCategory
     queryset = SubCategory.objects.all()
     parser_classes = (MultiPartParser, FormParser)
+    filter_backends = (SearchFilter, )
     serializer_class = SubCategorySerializer
 
 
@@ -55,6 +60,7 @@ class PromotionListAPIView(ListCreateAPIView):
     model = Promotion
     queryset = Promotion.objects.all()
     parser_classes = (MultiPartParser, FormParser)
+    filter_backends = (SearchFilter, )
     serializer_class = PromotionSerializer
 
 
@@ -70,6 +76,7 @@ class AdvertisementPromotionListAPIView(ListCreateAPIView):
     queryset = AdvertisementPromotion.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = AdvertisementPromotionSerializer
+    filter_backends = (SearchFilter, )
 
 
 class AdvertisementPromotionDetailAPIView(RetrieveUpdateDestroyAPIView):

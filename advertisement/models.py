@@ -14,12 +14,12 @@ def get_upload_path_head_image(instance, filename):
 
 
 class Category(models.Model):
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, default=None)
     title = models.CharField(max_length=50)
 
 
 class SubCategory(models.Model):
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, default=None)
     title = models.CharField(max_length=50)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name='sub_category')
 
@@ -36,8 +36,8 @@ class Advertisement(models.Model):
         ('Karakol', 'Karakol'),
         ('Cholpon-ata', 'Cholpon-ata'),
     )
-    slug = models.SlugField(max_length=150, unique=True)
     title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=150, unique=True, default=None)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
     sub_category = models.ForeignKey(to=SubCategory, on_delete=models.DO_NOTHING, related_name='advertisement')
@@ -71,7 +71,8 @@ class Promotion(models.Model):
 
 class AdvertisementPromotion(models.Model):
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='promotion')
-    promotion = models.ForeignKey(Promotion, on_delete=models.DO_NOTHING, related_name='advertisement_promotion')
+    promotion = models.ForeignKey(Promotion, on_delete=models.DO_NOTHING, related_name='advertisement_promotion',
+                                  default=None)
 
 
 class AdvertisementImage(models.Model):

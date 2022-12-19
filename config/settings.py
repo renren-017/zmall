@@ -43,16 +43,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # My frameworks
     'django_cleanup',
+    # 'pusher',
     # 'cities',
     # My apps
     'drf_yasg',
     'user',
     'advertisement',
+    'chat',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -149,10 +153,5 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 LOGIN_REDIRECT_URL = '/'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'donnie.darko.test@gmail.com'
-# EMAIL_HOST_PASSWORD = 'Monster12Inc'
-# DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'

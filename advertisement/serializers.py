@@ -49,7 +49,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advertisement
-        fields = ['id', 'slug', 'title', 'description', 'sub_category', 'price',
+        fields = ['id', 'title', 'description', 'sub_category', 'price',
                   'max_price', 'views', 'city', 'end_date', 'created_on', 'images', 'comments', 'promotion']
 
     def update(self, instance, validated_data):

@@ -40,6 +40,7 @@ urlpatterns = [
     path('accounts/', include('user.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api/', include('advertisement.urls')),
+    path('api/', include('chat.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
