@@ -2,7 +2,9 @@ advertisement/migrations
 user/migrations
 
 media
+data/
 
 .env
 __pycache__/
 .idea/
+venv/
