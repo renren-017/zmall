@@ -2,8 +2,15 @@ import os
 
 import jwt
 import os
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+ACCESS_TOKEN_LIFETIME = timedelta(minutes=5)
+REFRESH_TOKEN_LIFETIME = timedelta(days=1)
 
 class TokenError(Exception):
     pass
@@ -12,8 +19,8 @@ class TokenError(Exception):
 def encode_jwt(payload):
     token = jwt.encode(
         payload=payload,
-        key=os.environ['JWT_SECRET'],
-        algorithm=os.environ['JWT_ALGORITHM'],
+        key=os.getenv('JWT_SECRET'),
+        algorithm=os.getenv('JWT_ALGORITHM'),
         json_encoder=None
     )
 
@@ -22,9 +29,9 @@ def encode_jwt(payload):
 
 def decode_jwt(token):
     token = jwt.decode(
-        token=token,
-        key=os.environ['JWT_SECRET'],
-        algorithms=os.environ['JWT_ALGORITHM']
+        jwt=token,
+        key=os.getenv('JWT_SECRET'),
+        algorithms=os.getenv('JWT_ALGORITHM')
     )
 
     return token
@@ -61,20 +68,20 @@ class Token:
         return encode_jwt(self.payload)
 
     @classmethod
-    def create(cls, user):
+    def create(cls, user_id):
         token = cls()
-        token['user'] = user.id
+        token['user'] = user_id
         return token
 
 
 class AccessToken(Token):
     token_type = 'access'
-    lifetime = os.environ.get('ACCESS_TOKEN_LIFETIME')
+    lifetime = ACCESS_TOKEN_LIFETIME
 
 
 class RefreshToken(Token):
     token_type = 'refresh'
-    lifetime = os.environ.get('REFRESH_TOKEN_LIFETIME')
+    lifetime = REFRESH_TOKEN_LIFETIME
 
     @property
     def access_token(self):
