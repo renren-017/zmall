@@ -2,9 +2,9 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 
-from api.serializers.serializers import RegisterSerializer, UserSerializer
-from api.serializers.token_serializers import TokenObtainSerializer, AccessTokenObtainSerializer
-from api.tokens import TokenError
+from api_auth.serializers.serializers import RegisterSerializer, UserSerializer
+from api_auth.serializers.token_serializers import TokenObtainSerializer, AccessTokenObtainSerializer
+from api_auth.tokens import TokenError
 
 MyUser = get_user_model()
 

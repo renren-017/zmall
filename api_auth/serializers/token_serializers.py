@@ -1,8 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-
-from ..tokens import RefreshToken, AccessToken, decode_jwt
+from api_auth.tokens import RefreshToken, AccessToken, decode_jwt
 
 
 class TokenObtainSerializer(serializers.Serializer):
@@ -28,29 +27,32 @@ class TokenObtainSerializer(serializers.Serializer):
 
         self.user = authenticate(**authenticate_kwargs)
 
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
+        refresh = self.get_token(self.user.id)
 
-        data["refresh"] = str(refresh)
-        data["access"] = str(refresh.access_token)
+        data = {
+            "refresh": str(refresh),
+            "access": str(refresh.access_token)
+        }
 
         return data
+
+    @classmethod
+    def get_token(cls, user_id):
+        return cls.token_class.create(user_id)
 
 
 class AccessTokenObtainSerializer(serializers.Serializer):
     token_class = AccessToken
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields['refresh'] = serializers.CharField()
 
     def validate(self, attrs):
-
-        refresh = decode_jwt(attrs["refresh"])
+        token = decode_jwt(attrs["refresh"])
+        token_class = RefreshToken(token=token)
+        refresh = token_class.create(token['user'])
         data = {"access": str(refresh.access_token)}
 
         return data
-
-    @classmethod
-    def get_token(cls, user):
-        return cls.token_class.create(user)
