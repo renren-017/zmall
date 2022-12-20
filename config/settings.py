@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'user',
     'advertisement',
-    'chat',
 ]
 
 MIDDLEWARE = [
@@ -95,7 +94,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB_NAME'),
         'USER': os.getenv('POSTGRES_DB_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASS'),
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': 5432,
     }
 }
