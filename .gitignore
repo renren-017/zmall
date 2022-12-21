@@ -4,5 +4,6 @@ user/migrations
 media
 
 .env
-__pycache__/
+__pycache__
 .idea/
+venv/
