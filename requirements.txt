@@ -1,5 +1,14 @@
-Django==4.1.4
 psycopg2-binary==2.9.5
-python-dotenv==0.21.0
+cryptography==38.0.4
+Django==4.1.4
+django-cities==0.6.1
+django-cleanup==6.0.0
+django-cors-headers==3.13.0
+django-filter==22.1
+django-model-utils==4.3.1
 djangorestframework==3.14.0
-django_cleanup==6.0.0
+djangorestframework-jsonapi==6.0.0
+drf-yasg==1.21.4
+drf-yasg-json-api==0.9.1
+pusher==3.3.0
+python-dotenv==0.21.0

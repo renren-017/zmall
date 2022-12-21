@@ -1,17 +1,10 @@
-import os
-
 import jwt
-import os
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 from django.conf import settings
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 ACCESS_TOKEN_LIFETIME = timedelta(minutes=5)
 REFRESH_TOKEN_LIFETIME = timedelta(days=1)
+
 
 class TokenError(Exception):
     pass
