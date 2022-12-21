@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB_NAME'),
         'USER': os.getenv('POSTGRES_DB_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASS'),
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': 5432,
     }
 }
@@ -157,4 +157,15 @@ SWAGGER_SETTINGS = {
    }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'api_auth.backends.JWTAuthentication',
+    ),
+}
 
+# JWT Settings
+
+REFRESH_TOKEN_LIFETIME = 1
+ACCESS_TOKEN_LIFETIME = 10
+JWT_SECRET = os.getenv('JWT_SECRET')
+JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')
