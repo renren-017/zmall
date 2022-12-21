@@ -1,4 +1,4 @@
-from .utils import Util, token_generator
+from .utils import send_email, token_generator
 from .models import CustomUser
 from .forms import SignupForm
 
@@ -38,7 +38,7 @@ def register(request):
                 'to_email': user.email,
                 'email_subject': 'Verify your email',
             }
-            Util.send_email(data)
+            send_email(data)
             return redirect('home')
     else:
         form = SignupForm()
