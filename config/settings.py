@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     # Utils
     'django_cleanup',
+    'core',
     # 'pusher',
     # 'cities',
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.LoggingMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -81,10 +83,19 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': 'db',
+        'HOST': 'postgres',
         'PORT': 5432,
     }
 }
+
+
+MONGO_INITDB_ROOT_USERNAME = os.getenv('MONGO_INITDB_ROOT_USERNAME')
+MONGO_INITDB_ROOT_PASSWORD = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
+MONGO_INITDB_DATABASE = os.getenv('MONGO_INITDB_DATABASE')
+MONGO_INITDB_USERNAME = os.getenv('MONGO_INITDB_USERNAME')
+MONGO_INITDB_PASSWORD = os.getenv('MONGO_INITDB_PASSWORD')
+MONGO_HOST = os.getenv('MONGO_HOST')
+MONGO_PORT = os.getenv('MONGO_PORT')
 
 
 # Password validation
