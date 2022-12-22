@@ -13,3 +13,4 @@ drf-yasg-json-api==0.9.1
 pusher==3.3.0
 python-dotenv==0.21.0
 PyJWT==2.4.0
+pymongo==4.3.3
