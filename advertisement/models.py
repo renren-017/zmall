@@ -50,7 +50,7 @@ class Advertisement(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def username(self):
-        return self.user.username
+        return self.owner.username
 
     def __str__(self):
         return self.title

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Advertisement, AdvertisementImage
+from .models import Advertisement, AdvertisementImage, AdvertisementComment, AdvertisementPromotion, Category, \
+    SubCategory, Promotion
 
 
 # class AdvertisementAdmin(admin.ModelAdmin):
@@ -18,3 +19,14 @@ from .models import Advertisement, AdvertisementImage
 
 # admin.site.register(Advertisement, AdvertisementAdmin)
 # admin.site.register(AdvertisementImage, AdvertisementImageAdmin)
+
+admin.site.register(Advertisement)
+admin.site.register(AdvertisementImage)
+admin.site.register(Category)
+admin.site.register(SubCategory)
+admin.site.register(Promotion)
+admin.site.register(AdvertisementPromotion)
+admin.site.register(AdvertisementComment)
+
+
+

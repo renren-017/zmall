@@ -1,7 +1,7 @@
 import time
 import json
 
-from core.utils import get_collection_handle
+from core.db_management.connections.mongo_conn import get_collection_handle
 
 
 class LoggingMiddleware:
