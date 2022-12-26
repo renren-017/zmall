@@ -14,3 +14,5 @@ pusher==3.3.0
 python-dotenv==0.21.0
 PyJWT==2.4.0
 pymongo==4.3.3
+Scrapy==2.7.1
+Twisted==22.10.0
