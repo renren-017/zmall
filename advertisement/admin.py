@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import Advertisement, AdvertisementImage, AdvertisementComment, AdvertisementPromotion, Category, \
-    SubCategory, Promotion
-
+from .models import Advertisement, AdvertisementImage, Category, SubCategory
 
 # class AdvertisementAdmin(admin.ModelAdmin):
 #     list_display = ('id', 'title', 'user',)
@@ -17,16 +15,7 @@ from .models import Advertisement, AdvertisementImage, AdvertisementComment, Adv
 #     ordering = ('-id', )
 
 
-# admin.site.register(Advertisement, AdvertisementAdmin)
-# admin.site.register(AdvertisementImage, AdvertisementImageAdmin)
-
 admin.site.register(Advertisement)
 admin.site.register(AdvertisementImage)
 admin.site.register(Category)
 admin.site.register(SubCategory)
-admin.site.register(Promotion)
-admin.site.register(AdvertisementPromotion)
-admin.site.register(AdvertisementComment)
-
-
-

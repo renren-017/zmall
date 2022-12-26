@@ -1,16 +1,18 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from advertisement.models import Advertisement, Category, SubCategory, AdvertisementImage, AdvertisementComment, \
     AdvertisementPromotion, Promotion
+
+User = get_user_model()
 
 
 class PromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promotion
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'price']
 
 
 class AdvertisementPromotionSerializer(serializers.ModelSerializer):
-    promotion = PromotionSerializer(many=True, read_only=True)
 
     class Meta:
         model = AdvertisementPromotion
@@ -29,9 +31,10 @@ class AdvertisementImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image', 'advertisement']
 
     def create(self, validated_data):
+        advertisement = Advertisement.objects.get(pk=validated_data['advertisement'])
         image = AdvertisementImage(
             image=validated_data['image'],
-            advertisement=validated_data['advertisement']
+            advertisement=advertisement
         )
         image.save()
         return image
@@ -50,7 +53,22 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
         fields = ['id', 'title', 'description', 'sub_category', 'price',
-                  'max_price', 'views', 'city', 'end_date', 'created_on', 'images', 'comments', 'promotion']
+                  'max_price', 'views', 'city', 'end_date', 'created_on', 'images', 'comments']
+
+    def create(self, validated_data):
+        owner = User.objects.get(pk=1)
+        obj = Advertisement(
+            owner=owner,
+            title=validated_data['title'],
+            description=validated_data['description'],
+            sub_category=validated_data['sub_category'],
+            price=validated_data['price'],
+            max_price=validated_data['max_price'],
+            city=validated_data['city'],
+            end_date=validated_data['end_date'],
+        )
+        obj.save()
+        return obj
 
     def update(self, instance, validated_data):
         return AdvertisementSerializer(**validated_data).save()
@@ -60,7 +78,7 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubCategory
-        fields = ('id', 'slug', 'title')
+        fields = ('id', 'category', 'title')
 
 
 class CategorySerializer(serializers.ModelSerializer):

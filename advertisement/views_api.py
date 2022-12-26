@@ -1,7 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
     AdvertisementImage
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
@@ -34,7 +39,7 @@ class CategoryListAPIView(ListCreateAPIView):
 
 class CategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
     model = Category
-    lookup_field = 'slug'
+    # lookup_field = 'slug'
     queryset = Category.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = CategorySerializer
@@ -50,7 +55,7 @@ class SubCategoryListAPIView(ListCreateAPIView):
 
 class SubCategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
     model = SubCategory
-    lookup_field = 'slug'
+    # lookup_field = 'slug'
     queryset = SubCategory.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = SubCategorySerializer
@@ -86,11 +91,17 @@ class AdvertisementPromotionDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = AdvertisementPromotionSerializer
 
 
-class AdvertisementImageAPIView(CreateAPIView):
+class AdvertisementImageAPIView(APIView):
     model = AdvertisementImage
-    queryset = AdvertisementImage.objects.all()
     parser_classes = (MultiPartParser, FormParser)
-    serializer_class = AdvertisementImageSerializer
+
+    @swagger_auto_schema(operation_summary='Creates a new image', request_body=AdvertisementImageSerializer)
+    def post(self, request, *args, **kwargs):
+        serializer = AdvertisementImageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateImageAPIView(RetrieveUpdateDestroyAPIView):

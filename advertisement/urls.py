@@ -7,7 +7,7 @@ urlpatterns = [
     # api
     path('advertisement/', AdvertisementListView.as_view(), name='advertisement-list'),
     path('advertisement/<slug:slug>', AdvertisementDetailAPIView.as_view(), name='advertisement-detail'),
-    path('advertisement/add_image', AdvertisementImageAPIView.as_view(), name='add-image'),
+    path('advertisement/image-add', AdvertisementImageAPIView.as_view(), name='add-image'),
     path('image/<int:pk>', UpdateImageAPIView.as_view(), name='detail-image'),
     path('category/', CategoryListAPIView.as_view(), name='category-list'),
     path('category/<slug:slug>', CategoryDetailAPIView.as_view(), name='category-detail'),

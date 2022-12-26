@@ -14,43 +14,32 @@ def get_upload_path_head_image(instance, filename):
 
 
 class Category(models.Model):
-    slug = models.SlugField(max_length=150, unique=True, default=None)
+    # slug = models.SlugField(max_length=150, unique=True, blank=True)
     title = models.CharField(max_length=50)
 
 
 class SubCategory(models.Model):
-    slug = models.SlugField(max_length=150, unique=True, default=None)
+    # slug = models.SlugField(max_length=150, unique=True, blank=True)
     title = models.CharField(max_length=50)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name='sub_category')
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        return super().save(*args, **kwargs)
 
 
 class Advertisement(models.Model):
 
-    CITIES = (
-        ('Bishkek', 'Bishkek'),
-        ('Karakol', 'Karakol'),
-        ('Cholpon-ata', 'Cholpon-ata'),
-    )
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=150, unique=True, default=None)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
     sub_category = models.ForeignKey(to=SubCategory, on_delete=models.DO_NOTHING, related_name='advertisement')
-    # promotion = models.ForeignKey(to=Promotion, on_delete=models.DO_NOTHING, related_name='advertisement')
     price = models.PositiveIntegerField(default=0)
     max_price = models.PositiveIntegerField(default=0)
-    views = models.PositiveIntegerField(blank=True)
-    city = models.CharField(max_length=50, choices=CITIES, default='city-1')
+    views = models.PositiveIntegerField(default=0, blank=True)
+    city = models.CharField(max_length=150)
     end_date = models.DateTimeField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def username(self):
-        return self.owner.username
+        return self.user.username
 
     def __str__(self):
         return self.title
@@ -64,15 +53,11 @@ class Advertisement(models.Model):
 class Promotion(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField()
-    # advertisement_promotion = models.ForeignKey(AdvertisementPromotion,
-    #                                             on_delete=models.CASCADE,
-    #                                             related_name='promotion')
 
 
 class AdvertisementPromotion(models.Model):
-    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='promotion')
-    promotion = models.ForeignKey(Promotion, on_delete=models.DO_NOTHING, related_name='advertisement_promotion',
-                                  default=None)
+    # advertisement = models.ForeignKey(Advertisement, on_delete=models.PROTECT, related_name='promotion')
+    promotion = models.ForeignKey(to=Promotion, on_delete=models.CASCADE, related_name='sub_promotion')
 
 
 class AdvertisementImage(models.Model):
