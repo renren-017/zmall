@@ -4,10 +4,13 @@ from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
+
+from api_auth.backends import JWTAuthentication
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
     AdvertisementImage
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
@@ -15,7 +18,8 @@ from advertisement.serializers import AdvertisementSerializer, CategorySerialize
 
 
 class AdvertisementListView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated, )
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     queryset = Advertisement.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )

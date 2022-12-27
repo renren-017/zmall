@@ -14,14 +14,30 @@ def get_upload_path_head_image(instance, filename):
 
 
 class Category(models.Model):
-    # slug = models.SlugField(max_length=150, unique=True, blank=True)
     title = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 class SubCategory(models.Model):
-    # slug = models.SlugField(max_length=150, unique=True, blank=True)
     title = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name='sub_category')
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 class Advertisement(models.Model):

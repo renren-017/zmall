@@ -146,8 +146,7 @@ STATICFILES_DIRS = [
 # Authentication Configuration
 
 AUTH_USER_MODEL = 'user.CustomUser'
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
-                           'api_auth.backends.JWTAuthentication',]
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'api_auth.backends.JWTAuthentication',]
 
 LOGIN_REDIRECT_URL = '/swagger/'
 
@@ -158,15 +157,14 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 SWAGGER_SETTINGS = {
    'SECURITY_DEFINITIONS': {
-      'Basic': {
-            'type': 'basic'
-      },
       'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'
       }
-   }
+   },
+   'PERSIST_AUTH': True,
+   "USE_SESSION_AUTH": False
 }
 
 REST_FRAMEWORK = {

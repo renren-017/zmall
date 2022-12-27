@@ -21,7 +21,7 @@ class LoggingMiddleware:
             date=time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(time.time()))
         )
 
-        value = json.loads(response.content.decode("utf-8"))
+        value = response.content.decode("utf-8")
 
         collection_handle = get_collection_handle('logs')
         collection_handle.insert_one({key: value})

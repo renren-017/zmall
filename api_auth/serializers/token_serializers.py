@@ -23,12 +23,19 @@ class TokenObtainSerializer(serializers.Serializer):
         try:
             authenticate_kwargs["request"] = self.context["request"]
         except KeyError:
-            pass
+            raise KeyError("Request not found")
 
         self.user = authenticate(**authenticate_kwargs)
 
-        refresh = self.get_token(self.user.id)
-
+        try:
+            refresh = self.get_token(self.user.id)
+        except AttributeError:
+            raise AttributeError("Request: {}. User with email {} and password {} could not authenticate".format(
+                authenticate_kwargs['request'], attrs["email"], attrs["password"]
+            ))
+        print("Request: {}. User with email {} and password {} authenticated".format(
+            authenticate_kwargs['request'], attrs["email"], attrs["password"]
+        ))
         data = {
             "refresh": str(refresh),
             "access": str(refresh.access_token)
