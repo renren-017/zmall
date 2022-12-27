@@ -5,8 +5,6 @@ from django.urls import reverse
 from django.utils import timezone
 from time import time
 
-import json
-
 from advertisement.models import Advertisement, Category, SubCategory
 
 User = get_user_model()
@@ -91,4 +89,25 @@ class AdvertisementTest(APITestCase):
 
         self.assertLess(end-start, 0.004)
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+
+    def test_advertisements_get_by_pk(self):
+        ad = self.get_object()
+
+        start = time()
+        response = self.client.get(reverse("advertisement-detail", kwargs={"slug": ad.slug}), format='json')
+        end = time()
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertLess(end - start, 0.25)
+
+    def test_delete(self):
+        ad = self.get_object()
+
+        start = time()
+        response = self.client.delete(reverse("advertisement-detail", kwargs={"slug": ad.slug}), format='json')
+        end = time()
+
+        self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
+        self.assertEqual(Advertisement.objects.count(), 0)
+        self.assertLess(end - start, 0.25)
 
