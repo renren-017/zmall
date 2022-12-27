@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 class JWTAuthentication(authentication.BaseAuthentication):
-    authentication_header_prefix = 'Token'
+    authentication_header_prefix = 'Bearer'
 
     def authenticate(self, request):
         request.user = None
@@ -36,7 +36,9 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def _authenticate_credentials(self, request, token):
 
         try:
+            print(token)
             payload = decode_jwt(token)
+
         except Exception:
             raise exceptions.AuthenticationFailed('Authentication error. Cannot decode token')
 

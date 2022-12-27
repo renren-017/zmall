@@ -6,6 +6,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
     AdvertisementImage
@@ -14,7 +15,7 @@ from advertisement.serializers import AdvertisementSerializer, CategorySerialize
 
 
 class AdvertisementListView(ListCreateAPIView):
-    model = Advertisement
+    permission_classes = (IsAuthenticated, )
     queryset = Advertisement.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )

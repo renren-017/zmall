@@ -146,9 +146,10 @@ STATICFILES_DIRS = [
 # Authentication Configuration
 
 AUTH_USER_MODEL = 'user.CustomUser'
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
+                           'api_auth.backends.JWTAuthentication',]
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/swagger/'
 
 
 # API Settings
