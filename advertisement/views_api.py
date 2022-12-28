@@ -2,8 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, RetrieveDestroyAPIView
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -18,7 +18,6 @@ from advertisement.serializers import AdvertisementSerializer, CategorySerialize
 
 
 class AdvertisementListView(ListCreateAPIView):
-    authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly, )
     queryset = Advertisement.objects.all()
     parser_classes = (MultiPartParser, FormParser)
@@ -27,6 +26,7 @@ class AdvertisementListView(ListCreateAPIView):
 
 
 class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     lookup_field = 'slug'
     queryset = Advertisement.objects.all()
     model = Advertisement
@@ -35,6 +35,7 @@ class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class CategoryListAPIView(ListCreateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     model = Category
     queryset = Category.objects.all()
     parser_classes = (MultiPartParser, FormParser)
@@ -42,15 +43,16 @@ class CategoryListAPIView(ListCreateAPIView):
     serializer_class = CategorySerializer
 
 
-class CategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
-    model = Category
-    # lookup_field = 'slug'
+class CategoryDetailAPIView(RetrieveDestroyAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Category.objects.all()
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (JSONParser, )
     serializer_class = CategorySerializer
+    lookup_field = 'slug'
 
 
 class SubCategoryListAPIView(ListCreateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     model = SubCategory
     queryset = SubCategory.objects.all()
     parser_classes = (MultiPartParser, FormParser)
@@ -58,16 +60,15 @@ class SubCategoryListAPIView(ListCreateAPIView):
     serializer_class = SubCategorySerializer
 
 
-class SubCategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
-    model = SubCategory
-    # lookup_field = 'slug'
+class SubCategoryDetailAPIView(RetrieveDestroyAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = SubCategory.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = SubCategorySerializer
+    lookup_field = 'slug'
 
 
 class PromotionListAPIView(ListCreateAPIView):
-    model = Promotion
     queryset = Promotion.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )

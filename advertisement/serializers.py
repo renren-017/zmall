@@ -76,10 +76,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
+    advertisements = AdvertisementSerializer(many=True, read_only=True)
 
     class Meta:
         model = SubCategory
-        fields = ('id', 'category', 'title')
+        fields = ('id', 'category', 'title', "advertisements")
 
 
 class CategorySerializer(serializers.ModelSerializer):

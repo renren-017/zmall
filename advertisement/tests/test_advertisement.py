@@ -43,7 +43,7 @@ class AdvertisementTest(APITestCase):
         return obj.objects.get(pk=pk)
 
     def setUp(self):
-        user = self.get_object(obj=User)
+        user = self.get_object(obj=User, pk=1)
         self.client.force_authenticate(user)
 
     def test_advertisements_get(self):
@@ -100,7 +100,7 @@ class AdvertisementTest(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertLess(end - start, 0.25)
 
-    def test_delete(self):
+    def test_advertisement_delete(self):
         ad = self.get_object()
 
         start = time()
