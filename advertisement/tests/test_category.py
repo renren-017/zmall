@@ -155,15 +155,6 @@ class SubCategoryTest(APITestCase):
         self.assertLess(end-start, 0.004)
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
-    # def test_advertisements_get_by_pk(self):
-    #     ad = self.get_object()
-    #
-    #     start = time()
-    #     response = self.client.get(reverse("advertisement-detail", kwargs={"slug": ad.slug}), format='json')
-    #     end = time()
-    #
-    #     self.assertEqual(status.HTTP_200_OK, response.status_code)
-    #     self.assertLess(end - start, 0.25)
 
     def test_subcategory_delete(self):
         cat = self.get_object()
