@@ -46,12 +46,12 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.LoggingMiddleware'
+    'core.middleware.logging.LoggingMiddleware',
+    'core.middleware.viewcounter.ViewCountMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -97,6 +97,9 @@ MONGO_INITDB_PASSWORD = os.getenv('MONGO_INITDB_PASSWORD')
 MONGO_HOST = os.getenv('MONGO_HOST')
 MONGO_PORT = os.getenv('MONGO_PORT')
 
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
 # Password validation
 
