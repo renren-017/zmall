@@ -1,5 +1,5 @@
-import time
 import json
+import time
 
 from core.db_management.connections.mongo_conn import get_collection_handle
 
