@@ -149,7 +149,8 @@ STATICFILES_DIRS = [
 # Authentication Configuration
 
 AUTH_USER_MODEL = 'user.CustomUser'
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'api_auth.backends.JWTAuthentication',]
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
+                           'api_auth.backends.JWTAuthentication']
 
 LOGIN_REDIRECT_URL = '/swagger/'
 
@@ -176,9 +177,18 @@ REST_FRAMEWORK = {
     ),
 }
 
-# JWT Settings
+# JWT
 
 REFRESH_TOKEN_LIFETIME = 1
 ACCESS_TOKEN_LIFETIME = 10
 JWT_SECRET = os.getenv('JWT_SECRET')
 JWT_ALGORITHM = os.getenv('JWT_ALGORITHM')
+
+# SMTP
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
