@@ -1,6 +1,6 @@
 from django.db import connection
 
-def get_ads_sorted_by(parameter, asc=True):
+def get_ads_sorted(parameter, asc=True):
     """ Returns ads sorted by any existing parameter """
 
     with connection.cursor() as cursor:
@@ -11,7 +11,7 @@ def get_ads_sorted_by(parameter, asc=True):
     return fetched
 
 
-def get_ads_filtered_by(price=0, max_price=None, city="", has_image=None):
+def get_ads_filtered(price=0, max_price=None, city="", has_image=None):
     with connection.cursor() as cursor:
         max_price_query = " AND max_price < {}".format(max_price) if max_price else ""
 
