@@ -1,8 +1,9 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
-from api_auth.tokens import RefreshToken, AccessToken, decode_jwt
+from api_auth.tokens import RefreshToken, AccessToken, decode_jwt, TokenError
 
+User = get_user_model()
 
 class TokenObtainSerializer(serializers.Serializer):
     token_class = RefreshToken
@@ -20,25 +21,14 @@ class TokenObtainSerializer(serializers.Serializer):
             "password": attrs["password"],
         }
 
-        print(authenticate_kwargs)
-
         try:
             authenticate_kwargs["request"] = self.context["request"]
         except KeyError:
-            raise KeyError("Request not found")
+            pass
 
         user = authenticate(**authenticate_kwargs)
+        refresh = self.get_token(user.id)
 
-        print(user)
-        try:
-            refresh = self.get_token(user.id)
-        except AttributeError:
-            raise AttributeError("Request: {}. User with email {} and password {} could not authenticate".format(
-                authenticate_kwargs['request'], attrs["email"], attrs["password"]
-            ))
-        print("Request: {}. User with email {} and password {} authenticated".format(
-            authenticate_kwargs['request'], attrs["email"], attrs["password"]
-        ))
         data = {
             "refresh": str(refresh),
             "access": str(refresh.access_token)

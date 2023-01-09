@@ -111,3 +111,15 @@ class AdvertisementTest(APITestCase):
         self.assertEqual(Advertisement.objects.count(), 0)
         self.assertLess(end - start, 0.25)
 
+    def test_advertisement_delete_unauthorized(self):
+        ad = self.get_object()
+        self.client.logout()
+
+        start = time()
+        response = self.client.delete(reverse("advertisement-detail", kwargs={"slug": ad.slug}), format='json')
+        end = time()
+
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+        self.assertEqual(Advertisement.objects.count(), 1)
+        self.assertLess(end - start, 0.25)
+

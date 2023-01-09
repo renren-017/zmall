@@ -78,6 +78,18 @@ class CategoryTest(APITestCase):
         self.assertEqual(Category.objects.count(), 0)
         self.assertLess(end - start, 0.25)
 
+    def test_category_delete_unauthorized(self):
+        cat = self.get_object()
+        self.client.logout()
+
+        start = time()
+        response = self.client.delete(reverse("category-detail", kwargs={"slug": cat.slug}))
+        end = time()
+
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+        self.assertEqual(Category.objects.count(), 1)
+        self.assertLess(end - start, 0.25)
+
 
 class SubCategoryTest(APITestCase):
 
@@ -154,4 +166,15 @@ class SubCategoryTest(APITestCase):
         end = time()
 
         self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
+        self.assertLess(end - start, 0.25)
+
+    def test_subcategory_delete_unauthorized(self):
+        cat = self.get_object()
+        self.client.logout()
+
+        start = time()
+        response = self.client.delete(reverse("sub-category-detail", kwargs={"slug": cat.slug}))
+        end = time()
+
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
         self.assertLess(end - start, 0.25)

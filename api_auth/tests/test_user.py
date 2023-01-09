@@ -1,3 +1,4 @@
+import time
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -8,10 +9,13 @@ User = get_user_model()
 
 class UserTest(TestCase):
 
-    @classmethod
-    def setUpTestData(cls):
+    @staticmethod
+    def get_object(obj=User):
+        return obj.objects.first()
+
+    def setUp(self):
         user = User.objects.create(
-            email="sample@gmail.com'",
+            email="sample@gmail.com",
             first_name="User",
             last_name="User",
             is_active=True
@@ -19,26 +23,47 @@ class UserTest(TestCase):
         user.set_password("strongpass123")
         user.save()
 
-    def setUp(self):
-        pass
-
     def test_user_creation(self):
         data = {
-            'email': 'sample@gmail.com',
-            'first_name': 'first',
+            'email': 'sample2@gmail.com',
+            'first_name': 'second',
             'last_name': 'last',
-            'password': 'strongpass123'
+            'password': 'strongpass12345'
         }
+
+        start = time.time()
         response = self.client.post(reverse('api-register'), data, format='json', content_type='application/json')
+        end = time.time()
+
+        self.assertLess(end - start, 0.5)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['user']['is_active'], False)
 
     def test_get_token(self):
-        if User.objects.get(email='sample@gmail.com').is_active:
-            print("USER IS ACTIVE")
+
         data = {
             'email': 'sample@gmail.com',
             'password': 'strongpass123'
         }
-        response = self.client.post(reverse('api-token-obtain'), data, format='json', content_type='application/json')
 
+        start = time.time()
+        response = self.client.post(reverse('api-token-obtain'), data, format='json', content_type='application/json')
+        end = time.time()
+
+        self.assertLess(end - start, 0.5)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.get_object().is_active, True)
+
+    def test_get_token_invalid_credentials(self):
+
+        data = {
+            'email': 'nonexistent@gmail.com',
+            'password': 'nonex123'
+        }
+
+        start = time.time()
+        response = self.client.post(reverse('api-token-obtain'), data, format='json', content_type='application/json')
+        end = time.time()
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertLess(start - end, 0.03)
