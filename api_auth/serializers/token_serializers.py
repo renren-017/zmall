@@ -1,8 +1,9 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
-from api_auth.tokens import RefreshToken, AccessToken, decode_jwt
+from api_auth.tokens import RefreshToken, AccessToken, decode_jwt, TokenError
 
+User = get_user_model()
 
 class TokenObtainSerializer(serializers.Serializer):
     token_class = RefreshToken
@@ -25,9 +26,8 @@ class TokenObtainSerializer(serializers.Serializer):
         except KeyError:
             pass
 
-        self.user = authenticate(**authenticate_kwargs)
-
-        refresh = self.get_token(self.user.id)
+        user = authenticate(**authenticate_kwargs)
+        refresh = self.get_token(user.id)
 
         data = {
             "refresh": str(refresh),

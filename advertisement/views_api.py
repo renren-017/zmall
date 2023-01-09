@@ -2,12 +2,16 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, RetrieveDestroyAPIView
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from drf_yasg import openapi
 
+from api_auth.backends import JWTAuthentication
+from core.db_management.queries import get_ads_filtered
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
     AdvertisementImage
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
@@ -15,14 +19,40 @@ from advertisement.serializers import AdvertisementSerializer, CategorySerialize
 
 
 class AdvertisementListView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated, )
-    queryset = Advertisement.objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
     serializer_class = AdvertisementSerializer
 
+    def get_queryset(self):
+        queryset = Advertisement.objects.all()
+        price = self.request.query_params.get('price')
+        max_price = self.request.query_params.get('max_price')
+        city = self.request.query_params.get('city')
+        has_image = self.request.query_params.get('has_image')
+        if any([price, max_price, city, has_image]):
+            queryset = get_ads_filtered(price=price, max_price=max_price, city=city, has_image=has_image)
+        return queryset
+
+    price = openapi.Parameter('price', openapi.IN_QUERY,
+                              description="Minimum price for advertisement",
+                              type=openapi.TYPE_NUMBER)
+    max_price = openapi.Parameter('max_price', openapi.IN_QUERY,
+                                  description="Maximum price for advertisement",
+                                  type=openapi.TYPE_NUMBER)
+    city = openapi.Parameter('city', openapi.IN_QUERY,
+                             type=openapi.TYPE_STRING)
+    has_image = openapi.Parameter('has_image', openapi.IN_QUERY,
+                                  description="True/False filter for ad having image or otherwise",
+                                  type=openapi.TYPE_BOOLEAN)
+
+    @swagger_auto_schema(manual_parameters=[price, max_price, city, has_image])
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
 
 class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     lookup_field = 'slug'
     queryset = Advertisement.objects.all()
     model = Advertisement
@@ -31,6 +61,7 @@ class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class CategoryListAPIView(ListCreateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     model = Category
     queryset = Category.objects.all()
     parser_classes = (MultiPartParser, FormParser)
@@ -38,15 +69,16 @@ class CategoryListAPIView(ListCreateAPIView):
     serializer_class = CategorySerializer
 
 
-class CategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
-    model = Category
-    # lookup_field = 'slug'
+class CategoryDetailAPIView(RetrieveDestroyAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Category.objects.all()
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (JSONParser, )
     serializer_class = CategorySerializer
+    lookup_field = 'slug'
 
 
 class SubCategoryListAPIView(ListCreateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     model = SubCategory
     queryset = SubCategory.objects.all()
     parser_classes = (MultiPartParser, FormParser)
@@ -54,16 +86,15 @@ class SubCategoryListAPIView(ListCreateAPIView):
     serializer_class = SubCategorySerializer
 
 
-class SubCategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
-    model = SubCategory
-    # lookup_field = 'slug'
+class SubCategoryDetailAPIView(RetrieveDestroyAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = SubCategory.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = SubCategorySerializer
+    lookup_field = 'slug'
 
 
 class PromotionListAPIView(ListCreateAPIView):
-    model = Promotion
     queryset = Promotion.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
