@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from advertisement.models import Advertisement, Category, SubCategory, AdvertisementImage, AdvertisementComment, \
     AdvertisementPromotion, Promotion
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -62,10 +63,10 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             title=validated_data['title'],
             description=validated_data['description'],
             sub_category=validated_data['sub_category'],
-            price=validated_data['price'],
-            max_price=validated_data['max_price'],
+            price=validated_data.get('price', 0),
+            max_price=validated_data.get('max_price', 0),
             city=validated_data['city'],
-            end_date=validated_data['end_date'],
+            end_date=validated_data.get('end_date', timezone.now()),
         )
         obj.save()
         return obj
@@ -75,10 +76,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
+    advertisements = AdvertisementSerializer(many=True, read_only=True)
 
     class Meta:
         model = SubCategory
-        fields = ('id', 'category', 'title')
+        fields = ('id', 'category', 'title', "advertisements")
 
 
 class CategorySerializer(serializers.ModelSerializer):
