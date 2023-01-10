@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
+from django.core.mail import send_mail, send_mass_mail
 from django.conf import settings
 
 from api_auth.serializers.auth_serializers import RegisterSerializer, UserSerializer
