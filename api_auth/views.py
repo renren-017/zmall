@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail, send_mass_mail
+from django.core.mail import send_mail
 from django.conf import settings
 
 from api_auth.serializers.auth_serializers import RegisterSerializer, UserSerializer
@@ -23,7 +23,8 @@ class RegisterApi(generics.GenericAPIView):
 
         send_mail(
             'Please confirm that this is your current email ',
-            f'Use this token to verify your email at Zmall: \n{user.id}-{default_token_generator.make_token(user)}',
+            f'Use this token to verify your email at Zmall: '
+            f'\n{user.id}-{default_token_generator.make_token(user)}',
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[serializer.validated_data['email']],
             fail_silently=False,
@@ -31,7 +32,8 @@ class RegisterApi(generics.GenericAPIView):
 
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "message": "User Created Successfully. Check your email account to activate the account",
+            "detail": "User Created Successfully. Check your email account to "
+                      "activate the account",
         }, status=status.HTTP_201_CREATED)
 
 

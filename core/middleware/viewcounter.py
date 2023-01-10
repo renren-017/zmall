@@ -21,11 +21,10 @@ class ViewCountMiddleware:
                 or request.method != "GET":
             return response
 
-        advertisement_slug = request.get_full_path().split('/')[-1]
-        if not advertisement_slug:
+        advertisement_id = request.get_full_path().split('/')[-1]
+        if not advertisement_id:
             return response
 
-        advertisement_id = Advertisement.objects.get(slug=advertisement_slug).id
         redis_db.sadd(advertisement_id, ip_addr)
 
         # print(redis_db.smembers(advertisement_id))

@@ -17,6 +17,7 @@ class AdvertisementListView(ListAPIView):
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
     serializer_class = AdvertisementSerializer
+    search_fields = ('title', 'description')
 
     def get_queryset(self):
         queryset = Advertisement.objects.all()
@@ -24,6 +25,7 @@ class AdvertisementListView(ListAPIView):
         max_price = self.request.query_params.get('max_price')
         city = self.request.query_params.get('city')
         has_image = self.request.query_params.get('has_image')
+
         if any([price, max_price, city, has_image]):
             queryset = get_ads_filtered(price=price, max_price=max_price, city=city, has_image=has_image)
         return queryset
@@ -47,7 +49,6 @@ class AdvertisementListView(ListAPIView):
 
 class AdvertisementDetailAPIView(RetrieveAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    lookup_field = 'slug'
     queryset = Advertisement.objects.all()
     model = Advertisement
     parser_classes = (MultiPartParser, FormParser)
