@@ -37,7 +37,7 @@ def parse_job(url):
 
     city = title.find_next("div").text
     if len(city) > 150:
-        print(f"{full_url}: {city}")
+        print(f"Parsing error: {full_url} has wrong city specification, i.e. {city}")
         return
 
     data = {
@@ -51,4 +51,4 @@ def parse_job(url):
     advertisement, created = Advertisement.objects.get_or_create(title=data['title'], city=data['city'],
                                                                  defaults=data)
 
-    print(advertisement.title)
+    print(f"Parsing data: {advertisement.tile}")
