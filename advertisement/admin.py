@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Advertisement, AdvertisementImage, Category, SubCategory
+from .models import Advertisement, AdvertisementImage, Category, SubCategory, AdvertisementPromotion, Promotion
 
-# class AdvertisementAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'title', 'user',)
-#     list_filter = ('id', 'title', 'user',)
-#     search_fields = ('id', 'title',)
-#     ordering = ('-id', )
+
+class AdvertisementAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sub_category', 'title', 'owner', 'description', 'city', 'views', 'created_on')
+    list_filter = ('id', 'title', 'owner')
+    search_fields = ('id', 'title',)
+    ordering = ('-created_on',)
 
 
 # class AdvertisementImageAdmin(admin.ModelAdmin):
@@ -15,7 +16,9 @@ from .models import Advertisement, AdvertisementImage, Category, SubCategory
 #     ordering = ('-id', )
 
 
-admin.site.register(Advertisement)
+admin.site.register(Advertisement, AdvertisementAdmin)
 admin.site.register(AdvertisementImage)
 admin.site.register(Category)
 admin.site.register(SubCategory)
+admin.site.register(AdvertisementPromotion)
+admin.site.register(Promotion)

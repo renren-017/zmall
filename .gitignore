@@ -1,5 +1,6 @@
 media
 data/
+parse_data/
 
 .env
 __pycache__
