@@ -15,20 +15,20 @@ def get_upload_path_head_image(instance, filename):
 
 class Category(models.Model):
     title = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=100, unique=True, blank=True)
+    slug = models.CharField(max_length=100, unique=True, blank=True, db_index=True)
 
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.title, allow_unicode=True)
         return super().save(*args, **kwargs)
 
 
 class SubCategory(models.Model):
     title = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=100, unique=True, blank=True)
+    slug = models.CharField(max_length=100, unique=True, blank=True, db_index=True)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name='sub_category')
 
     def __str__(self):
@@ -36,22 +36,21 @@ class SubCategory(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.title, allow_unicode=True)
         return super().save(*args, **kwargs)
 
 
 class Advertisement(models.Model):
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField(max_length=500)
-    sub_category = models.ForeignKey(to=SubCategory, on_delete=models.DO_NOTHING, related_name='advertisement')
+    sub_category = models.ForeignKey(to=SubCategory, on_delete=models.DO_NOTHING, related_name='advertisements')
     price = models.PositiveIntegerField(default=0)
     max_price = models.PositiveIntegerField(default=0)
     views = models.PositiveIntegerField(default=0, blank=True)
     city = models.CharField(max_length=150)
-    end_date = models.DateTimeField(blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def username(self):
@@ -60,11 +59,6 @@ class Advertisement(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        return super().save(*args, **kwargs)
-
 
 class Promotion(models.Model):
     name = models.CharField(max_length=100)
@@ -72,7 +66,7 @@ class Promotion(models.Model):
 
 
 class AdvertisementPromotion(models.Model):
-    # advertisement = models.ForeignKey(Advertisement, on_delete=models.PROTECT, related_name='promotion')
+    advertisement = models.ForeignKey(to=Advertisement, on_delete=models.PROTECT, related_name='promotion')
     promotion = models.ForeignKey(to=Promotion, on_delete=models.CASCADE, related_name='sub_promotion')
 
 
