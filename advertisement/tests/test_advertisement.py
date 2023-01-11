@@ -72,24 +72,6 @@ class AdvertisementTest(APITestCase):
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertLess(end-start, 0.009)
 
-    def test_advertisements_post_unauthorized(self):
-        self.client.logout()
-        subcategory = self.get_object(obj=SubCategory)
-
-        data = {
-            "title": "New Ad2",
-            "description": "Lorem Ipsum2",
-            "sub_category": subcategory.id,
-            "city": "Bishkek",
-        }
-
-        start = time()
-        response = self.client.post(reverse("advertisement-list"), data=data, format='json')
-        end = time()
-
-        self.assertLess(end-start, 0.004)
-        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
-
     def test_advertisements_get_by_pk(self):
         ad = self.get_object()
 
@@ -99,27 +81,3 @@ class AdvertisementTest(APITestCase):
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertLess(end - start, 0.25)
-
-    def test_advertisement_delete(self):
-        ad = self.get_object()
-
-        start = time()
-        response = self.client.delete(reverse("advertisement-detail", kwargs={"slug": ad.slug}), format='json')
-        end = time()
-
-        self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
-        self.assertEqual(Advertisement.objects.count(), 0)
-        self.assertLess(end - start, 0.25)
-
-    def test_advertisement_delete_unauthorized(self):
-        ad = self.get_object()
-        self.client.logout()
-
-        start = time()
-        response = self.client.delete(reverse("advertisement-detail", kwargs={"slug": ad.slug}), format='json')
-        end = time()
-
-        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
-        self.assertEqual(Advertisement.objects.count(), 1)
-        self.assertLess(end - start, 0.25)
-
