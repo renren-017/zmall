@@ -1,5 +1,8 @@
 from django.db import connection
 
+from advertisement.models import Advertisement
+
+
 def get_ads_sorted(parameter, asc=True):
     """ Returns ads sorted by any existing parameter """
 
@@ -11,20 +14,24 @@ def get_ads_sorted(parameter, asc=True):
     return fetched
 
 
-def get_ads_filtered(price=0, max_price=None, city="", has_image=None):
+def get_ads_filtered(price=-1, max_price=None, city="", has_image=None):
     with connection.cursor() as cursor:
         max_price_query = " AND max_price < {}".format(max_price) if max_price else ""
 
-        city_query = " AND city ILIKE %%{}%%".format(city)
+        city_query = " AND city ILIKE '%%{}%%'".format(city) if city else ""
 
         image_query = " AND id {} IN (SELECT DISTINCT advertisement_id FROM advertisement_advertisementimage)".format(
-            "NOT" if not has_image else "") if has_image is not None else ""
+            "NOT" if has_image == "false" else "") if has_image is not None else ""
 
         cursor.execute("SELECT * from advertisement_advertisement WHERE price > %s" +
-                       max_price_query + city_query + image_query, [price])
+                       max_price_query + city_query + image_query, [price if price else -1])
         fetched = cursor.fetchall()
 
-    return fetched
+        list_of_ids = []
+        for obj in fetched:
+            list_of_ids.append(obj[0])
+        queryset = Advertisement.objects.filter(pk__in=list_of_ids)
+    return queryset
 
 
 def get_comment_tree(advertisement_id):
