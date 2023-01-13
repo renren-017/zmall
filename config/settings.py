@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'core',
     'corsheaders',
+    'channels',
     # 'pusher',
     # 'cities',
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'user',
     'advertisement',
+    'chat',
 
     'rest_framework'
 ]
@@ -193,3 +195,15 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+ASGI_APPLICATION = 'config.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        "CONFIG": {
+            "hosts": ["redis://:ZjdmYTJhZmZlYjkzZmI4ZDRhN2FmNTJl@redis:6379"],
+        },
+    },
+}

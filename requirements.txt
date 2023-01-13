@@ -18,3 +18,5 @@ Scrapy==2.7.1
 Twisted==22.10.0
 BeautifulSoup4==4.11.1
 redis==4.4.0
+channels==4.0.0
+channels-redis==4.0.0
