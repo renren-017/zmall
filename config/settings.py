@@ -140,12 +140,14 @@ USE_TZ = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'config/static'),
+
 ]
 
 
@@ -203,7 +205,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         "CONFIG": {
-            "hosts": ["redis://:ZjdmYTJhZmZlYjkzZmI4ZDRhN2FmNTJl@redis:6379"],
+            "hosts": [os.environ.get("CHANNEL_CONF", f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}")],
         },
     },
 }

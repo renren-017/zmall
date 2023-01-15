@@ -37,9 +37,10 @@ services:
     tty: true
     build:
       context: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: daphne config.routing:application -b 0.0.0.0 -p 8000
     volumes:
       - .:/zmall
+      - static:/zmall/static
     ports:
       - "8000:8000"
     env_file:
@@ -48,9 +49,22 @@ services:
       - net
     depends_on:
       - postgres
+  nginx:
+    restart: on-failure
+    image: nginx:1.19.8
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - static:/zmall/static
+    ports:
+      - "8080:80"
+    networks:
+      - net
+    depends_on:
+      - web
 volumes:
   pgdata:
   mongodata:
   redisdata:
+  static:
 networks:
   net: {}
