@@ -48,13 +48,13 @@ class Advertisement(models.Model):
     sub_category = models.ForeignKey(to=SubCategory, on_delete=models.DO_NOTHING, related_name='advertisements')
     price = models.PositiveIntegerField(default=0)
     max_price = models.PositiveIntegerField(default=0)
-    views = models.PositiveIntegerField(default=0, blank=True)
-    city = models.CharField(max_length=150)
-    end_date = models.DateTimeField(null=True, blank=True)
+    views = models.PositiveIntegerField(blank=True, default=0)
+    city = models.CharField(max_length=150, blank=True)
+    end_date = models.DateTimeField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def username(self):
-        return self.user.username
+        return self.owner.username
 
     def __str__(self):
         return self.title
@@ -76,11 +76,13 @@ class AdvertisementImage(models.Model):
 
 
 class AdvertisementComment(models.Model):
-    parent_id = models.IntegerField()
+    parent = models.ForeignKey("self", on_delete=models.SET_NULL, blank=True, null=True, related_name="sub_comment")
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments')
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='comments')
-    body = models.TextField()
+    body = models.TextField(max_length=5000)
 
+    def __str__(self):
+        return f"{self.advertisement} - comment"
 
 
 

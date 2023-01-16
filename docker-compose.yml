@@ -48,6 +48,26 @@ services:
       - net
     depends_on:
       - postgres
+  celery:
+    build: .
+    command: celery -A config worker -l info
+    volumes:
+      - .:/zmall
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - net
+  celery-beat:
+    build: .
+    command: celery -A config beat -l info
+    volumes:
+      - .:/zmall
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - net
 volumes:
   pgdata:
   mongodata:

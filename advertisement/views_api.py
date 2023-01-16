@@ -1,6 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, \
+    RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.pagination import LimitOffsetPagination
 
@@ -8,18 +9,20 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_yasg import openapi
 
 from core.db_management.queries import get_ads_filtered
-from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion
+from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
+    AdvertisementImage
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
-    PromotionSerializer, AdvertisementPromotionSerializer
+    PromotionSerializer, AdvertisementPromotionSerializer, AdvertisementImageSerializer
 
 
-class AdvertisementListView(ListAPIView):
+class AdvertisementListView(ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
     serializer_class = AdvertisementSerializer
     pagination_class = LimitOffsetPagination
     search_fields = ('title', 'description')
+    queryset = Advertisement.objects.select_related('sub_category').all()
 
     def get_queryset(self):
         queryset = Advertisement.objects.all()
@@ -46,7 +49,13 @@ class AdvertisementListView(ListAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class AdvertisementDetailAPIView(RetrieveAPIView):
+class AdvertisementImageAPIView(CreateAPIView):
+    model = AdvertisementImage
+    serializer_class = AdvertisementImageSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+
+class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Advertisement.objects.all()
     model = Advertisement
@@ -74,7 +83,7 @@ class CategoryDetailAPIView(RetrieveAPIView):
 class SubCategoryListAPIView(ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     model = SubCategory
-    queryset = SubCategory.objects.all()
+    queryset = SubCategory.objects.select_related('category').all()
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
     serializer_class = SubCategorySerializer
@@ -104,7 +113,7 @@ class PromotionDetailAPIView(RetrieveAPIView):
 
 class AdvertisementPromotionListAPIView(ListAPIView):
     model = AdvertisementPromotion
-    queryset = AdvertisementPromotion.objects.all()
+    queryset = AdvertisementPromotion.objects.prefetch_related('advertisement').all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = AdvertisementPromotionSerializer
     filter_backends = (SearchFilter, )
