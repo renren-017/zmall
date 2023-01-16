@@ -9,13 +9,12 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_yasg import openapi
 
 from core.db_management.queries import get_ads_filtered
-from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
-    AdvertisementImage
+from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
-    PromotionSerializer, AdvertisementPromotionSerializer, AdvertisementImageSerializer
+    PromotionSerializer, AdvertisementPromotionSerializer
 
 
-class AdvertisementListView(ListCreateAPIView):
+class AdvertisementListView(ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
