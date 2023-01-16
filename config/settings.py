@@ -31,6 +31,10 @@ INSTALLED_APPS = [
     'core',
     'corsheaders',
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    'channels',
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 =======
     'channels',
 >>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
@@ -41,6 +45,10 @@ INSTALLED_APPS = [
     'user',
     'advertisement',
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    'chat',
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 =======
     'chat',
 >>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
@@ -207,7 +215,10 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 ASGI_APPLICATION = 'config.routing.application'
 
 CHANNEL_LAYERS = {
@@ -218,6 +229,9 @@ CHANNEL_LAYERS = {
         },
     },
 }
+<<<<<<< HEAD
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
+=======
 >>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -230,6 +244,12 @@ AWS_DEFAULT_ACL = None
 AWS_S3_VERIFY = True
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+GOOGLE_SECRET = os.getenv('GOOGLE_SECRET')
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 =======
 
 GOOGLE_SECRET = os.getenv('GOOGLE_SECRET')

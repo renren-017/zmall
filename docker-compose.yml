@@ -50,7 +50,10 @@ services:
     depends_on:
       - postgres
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
   nginx:
     restart: always
     image: nginx:1.19.8
@@ -63,6 +66,9 @@ services:
       - net
     depends_on:
       - web
+<<<<<<< HEAD
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
+=======
 >>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
   celery:
     build: .

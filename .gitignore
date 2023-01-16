@@ -7,3 +7,5 @@ static/
 __pycache__
 .idea/
 venv/
+
+dump.rdb

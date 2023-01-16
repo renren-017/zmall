@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -72,6 +73,8 @@ class ChatRoomDetailAPIView(RetrieveAPIView):
         }
         return Response(response_body)
 =======
+=======
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 import asyncio
 
 from asgiref.sync import async_to_sync
@@ -111,4 +114,7 @@ class MessageSendAPIView(APIView):
 
         return Response({"status": True}, status=status.HTTP_201_CREATED)
 
+<<<<<<< HEAD
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
+=======
 >>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c

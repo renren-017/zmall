@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from rest_framework import serializers
 
 from chat.models import ChatRoom, Message, User
@@ -37,6 +38,8 @@ class ChatRoomDetailSerializer(serializers.ModelSerializer):
 
 
 =======
+=======
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from chat.models import Message
@@ -53,5 +56,9 @@ class MessageSerializer(serializers.Serializer):
             "user": User.objects.get(pk=validated_data["user_id"])
         }
         message = Message.objects.create(**data)
+<<<<<<< HEAD
+        return message
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
+=======
         return message
 >>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
