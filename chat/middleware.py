@@ -24,10 +24,9 @@ class WebSocketJwtAuthMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        print("ASUIFJADNSMFUKHJDSFH")
+
         parsed_query_string = parse_qs(scope["query_string"])
         token = parsed_query_string.get(b"token")[0].decode("utf-8")
-        print(f"TOKEN {token}")
 
         try:
             access_token = AccessToken(token)

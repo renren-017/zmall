@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from jwt.exceptions import ExpiredSignatureError
 
 from api_auth.tokens import decode_jwt
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -38,12 +39,14 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
     def _authenticate_credentials(self, request, token):
 
-        token.check_exp(current_time=timezone.now())
-
         try:
             payload = decode_jwt(token)
         except Exception:
             raise exceptions.AuthenticationFailed('Authentication error. Cannot decode token')
+
+        print(payload['exp'])
+        # if payload['exp'] > timezone.now():
+        #     raise exceptions.AuthenticationFailed('Token has expired')
 
         try:
             user = User.objects.get(pk=payload['user'])
