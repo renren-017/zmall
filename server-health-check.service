@@ -1,0 +1,10 @@
+[Unit]
+Description=Server Health Check
+
+[Service]
+ExecStart=/bin/ping -c 3 example.com
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

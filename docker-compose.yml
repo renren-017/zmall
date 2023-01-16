@@ -37,9 +37,10 @@ services:
     tty: true
     build:
       context: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --reload
     volumes:
       - .:/zmall
+      - static:/zmall/static
     ports:
       - "8000:8000"
     env_file:
@@ -48,6 +49,21 @@ services:
       - net
     depends_on:
       - postgres
+<<<<<<< HEAD
+=======
+  nginx:
+    restart: always
+    image: nginx:1.19.8
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - static:/zmall/static
+    ports:
+      - "80:80"
+    networks:
+      - net
+    depends_on:
+      - web
+>>>>>>> 420f9660c278aebed21a2a8f1ca5ce670068b81c
   celery:
     build: .
     command: celery -A config worker -l info
@@ -72,5 +88,6 @@ volumes:
   pgdata:
   mongodata:
   redisdata:
+  static:
 networks:
   net: {}
