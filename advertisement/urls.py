@@ -10,6 +10,7 @@ urlpatterns = [
     path('advertisement/add-image', AdvertisementImageAPIView.as_view(), name='add-image'),
     path('advertisement/add_promotion/', AdvertisementPromotionDetailAPIView.as_view(), name='sub-promotion-detail'),
     path('advertisement/delete_promotion/', AdvertisementPromotionDestroyAPIView.as_view(), name='sub-promotion-detail'),
+    path('on_moderate', OnModerationAPIView.as_view(), name='on_moderate'),
     path('category/', CategoryListAPIView.as_view(), name='category-list'),
     path('category/<slug:slug>', CategoryDetailAPIView.as_view(), name='category-detail'),
     path('sub-category/', SubCategoryListAPIView.as_view(), name='sub-category-list'),

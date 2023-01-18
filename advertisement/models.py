@@ -52,6 +52,7 @@ class Advertisement(models.Model):
     city = models.CharField(max_length=150, blank=True)
     end_date = models.DateTimeField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=False)
 
     def username(self):
         return self.owner.username

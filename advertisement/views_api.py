@@ -12,6 +12,7 @@ from drf_yasg import openapi
 from rest_framework.response import Response
 
 from advertisement.permissions import IsOwnerOrReadOnly
+from core.db_management.debugger import query_debugger
 from core.db_management.queries import get_ads_filtered
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
     AdvertisementImage, Favorite
@@ -20,17 +21,17 @@ from advertisement.serializers import AdvertisementSerializer, CategorySerialize
     AdvertisementDetailSerializer, PromotionDestroySerializer
 
 
-class AdvertisementListView(ListAPIView):
+class AdvertisementListView(ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, )
     serializer_class = AdvertisementSerializer
     pagination_class = LimitOffsetPagination
     search_fields = ('title', 'description')
-    queryset = Advertisement.objects.select_related('sub_category').all()
 
+    @query_debugger
     def get_queryset(self):
-        queryset = Advertisement.objects.all()
+        queryset = Advertisement.objects.filter(is_active=True).select_related('sub_category')
         price = self.request.query_params.get('price')
         max_price = self.request.query_params.get('max_price')
         city = self.request.query_params.get('city')
@@ -53,11 +54,24 @@ class AdvertisementListView(ListAPIView):
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class OnModerationAPIView(ListAPIView):
+    serializer_class = AdvertisementSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    queryset = Advertisement.objects.filter(is_active=False).select_related('sub_category')
+
+    def get_queryset(self):
+        return self.queryset.select_related('sub_category').filter(owner=self.request.user, is_active=False)
+
 
 class AdvertisementImageAPIView(CreateAPIView):
     model = AdvertisementImage
     serializer_class = AdvertisementImageSerializer
     parser_classes = (MultiPartParser, FormParser)
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
 
 
 class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
