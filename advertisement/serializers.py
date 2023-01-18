@@ -17,7 +17,14 @@ class AdvertisementPromotionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AdvertisementPromotion
-        fields = ['id',  'advertisement']
+        fields = ['id',  'advertisement', 'promotion']
+
+
+class PromotionDestroySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AdvertisementPromotion
+        fields = ['id', 'promotion']
 
 
 class AdvertisementCommentSerializer(serializers.ModelSerializer):
@@ -36,13 +43,25 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     views = serializers.IntegerField(read_only=True)
     created_on = serializers.DateTimeField(read_only=True)
     images = AdvertisementImageSerializer(many=True, read_only=True)
-    comments = AdvertisementCommentSerializer(many=True, read_only=True)
-    promotions = AdvertisementPromotionSerializer(many=True, read_only=True)
+    promotion = AdvertisementPromotionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Advertisement
         fields = ['id', 'title', 'description', 'sub_category', 'price',
-                  'max_price', 'views', 'city', 'end_date', 'created_on', 'images', 'comments', 'promotions']
+                  'max_price', 'views', 'city', 'end_date', 'created_on', 'images', 'promotion']
+
+
+class AdvertisementDetailSerializer(serializers.ModelSerializer):
+    views = serializers.IntegerField(read_only=True)
+    created_on = serializers.DateTimeField(read_only=True)
+    images = AdvertisementImageSerializer(many=True, read_only=True)
+    comments = AdvertisementCommentSerializer(many=True, read_only=True)
+    promotion = AdvertisementPromotionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Advertisement
+        fields = ['id', 'title', 'description', 'sub_category', 'price',
+                  'max_price', 'views', 'city', 'end_date', 'created_on', 'images', 'comments', 'promotion']
 
 
 class SubCategorySerializer(serializers.ModelSerializer):

@@ -10,14 +10,14 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from drf_yasg import openapi
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
+from advertisement.permissions import IsOwnerOrReadOnly
 from core.db_management.queries import get_ads_filtered
 from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
     AdvertisementImage, Favorite
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
-    PromotionSerializer, AdvertisementPromotionSerializer, AdvertisementImageSerializer, FavoriteSerializer
-from user.models import CustomUser
+    PromotionSerializer, AdvertisementPromotionSerializer, AdvertisementImageSerializer, FavoriteSerializer, \
+    AdvertisementDetailSerializer, PromotionDestroySerializer
 
 
 class AdvertisementListView(ListAPIView):
@@ -61,11 +61,11 @@ class AdvertisementImageAPIView(CreateAPIView):
 
 
 class AdvertisementDetailAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Advertisement.objects.all()
     model = Advertisement
     parser_classes = (MultiPartParser, FormParser)
-    serializer_class = AdvertisementSerializer
+    serializer_class = AdvertisementDetailSerializer
 
 
 class CategoryListAPIView(ListAPIView):
@@ -102,20 +102,6 @@ class SubCategoryDetailAPIView(RetrieveAPIView):
     lookup_field = 'slug'
 
 
-class PromotionListAPIView(ListAPIView):
-    queryset = Promotion.objects.all()
-    parser_classes = (MultiPartParser, FormParser)
-    filter_backends = (SearchFilter, )
-    serializer_class = PromotionSerializer
-
-
-class PromotionDetailAPIView(RetrieveAPIView):
-    model = Promotion
-    queryset = Promotion.objects.all()
-    parser_classes = (MultiPartParser, FormParser)
-    serializer_class = PromotionSerializer
-
-
 class AdvertisementPromotionListAPIView(ListAPIView):
     model = AdvertisementPromotion
     queryset = AdvertisementPromotion.objects.prefetch_related('advertisement').all()
@@ -124,11 +110,27 @@ class AdvertisementPromotionListAPIView(ListAPIView):
     filter_backends = (SearchFilter, )
 
 
-class AdvertisementPromotionDetailAPIView(RetrieveAPIView):
-    model = AdvertisementPromotion
+class AdvertisementPromotionDetailAPIView(CreateAPIView):
     queryset = AdvertisementPromotion.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = AdvertisementPromotionSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+
+
+class AdvertisementPromotionDestroyAPIView(DestroyAPIView):
+    queryset = AdvertisementPromotion.objects.all()
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    parser_classes = (MultiPartParser, FormParser)
+
+    @swagger_auto_schema(operation_summary='Removes promotion from advertisement, '
+                                           'takes "sub_promotion_id" not "promotion"',
+                         request_body=PromotionDestroySerializer)
+    def delete(self, request, *args, **kwargs):
+        queryset = AdvertisementPromotion.objects.filter(promotion_id=request.data['promotion'])
+        if queryset.exists():
+            queryset.delete()
+            return Response('Deleted', status=status.HTTP_204_NO_CONTENT)
+        return Response('Promotion does not exist in advertisement', status=status.HTTP_404_NOT_FOUND)
 
 
 class AdvertisementFavoriteAPIView(ListCreateAPIView):
@@ -159,3 +161,5 @@ class FavoriteDeleteAPIView(DestroyAPIView):
             queryset.delete()
             return Response('Deleted', status=status.HTTP_204_NO_CONTENT)
         return Response('Advertisement does not exist in favorite', status=status.HTTP_404_NOT_FOUND)
+
+
