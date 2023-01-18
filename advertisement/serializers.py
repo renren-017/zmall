@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from advertisement.models import Advertisement, Category, SubCategory, AdvertisementImage, AdvertisementComment, \
-    AdvertisementPromotion, Promotion
+    AdvertisementPromotion, Promotion, Favorite
 from django.utils import timezone
 
 User = get_user_model()
@@ -61,4 +61,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'sub_category')
 
 
-
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = ('id', 'advertisement', 'created_at')

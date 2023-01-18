@@ -1,17 +1,23 @@
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import RetrieveAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, \
-    RetrieveUpdateDestroyAPIView, CreateAPIView
+    RetrieveUpdateDestroyAPIView, CreateAPIView, DestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.pagination import LimitOffsetPagination
 
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from drf_yasg import openapi
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from core.db_management.queries import get_ads_filtered
-from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion
+from advertisement.models import Advertisement, Category, SubCategory, Promotion, AdvertisementPromotion, \
+    AdvertisementImage, Favorite
 from advertisement.serializers import AdvertisementSerializer, CategorySerializer, SubCategorySerializer, \
-    PromotionSerializer, AdvertisementPromotionSerializer
+    PromotionSerializer, AdvertisementPromotionSerializer, AdvertisementImageSerializer, FavoriteSerializer
+from user.models import CustomUser
 
 
 class AdvertisementListView(ListAPIView):
@@ -123,3 +129,33 @@ class AdvertisementPromotionDetailAPIView(RetrieveAPIView):
     queryset = AdvertisementPromotion.objects.all()
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = AdvertisementPromotionSerializer
+
+
+class AdvertisementFavoriteAPIView(ListCreateAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    permission_classes = (IsAuthenticated, )
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class FavoriteDeleteAPIView(DestroyAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = (IsAuthenticated, )
+
+    @swagger_auto_schema(request_body=FavoriteSerializer,
+                         operation_summary='Removes advertisement from favorites')
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        queryset = Favorite.objects.filter(user=user, advertisement_id=request.data['advertisement'])
+        if queryset.exists():
+            queryset.delete()
+            return Response('Deleted', status=status.HTTP_204_NO_CONTENT)
+        return Response('Advertisement does not exist in favorite', status=status.HTTP_404_NOT_FOUND)

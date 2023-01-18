@@ -85,4 +85,7 @@ class AdvertisementComment(models.Model):
         return f"{self.advertisement} - comment"
 
 
-
+class Favorite(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)

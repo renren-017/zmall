@@ -16,4 +16,6 @@ urlpatterns = [
     path('promotion/<int:pk>', PromotionDetailAPIView.as_view(), name='promotion-detail'),
     path('sub-promotion/', AdvertisementPromotionListAPIView.as_view(), name='sub-promotion-list'),
     path('sub-promotion/<int:pk>', AdvertisementPromotionDetailAPIView.as_view(), name='sub-promotion-detail'),
+    path('favorites/', AdvertisementFavoriteAPIView.as_view(), name='favorite_list_create'),
+    path('favorite_delete/', FavoriteDeleteAPIView.as_view(), name='favorite_delete')
 ]
